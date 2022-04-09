@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 
 
-
+// React 18 new rendering method
 const container = document.getElementById('root');
 const root = createRoot(container);
 root.render(<App tab="home" />);

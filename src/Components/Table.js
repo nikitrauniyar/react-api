@@ -3,12 +3,15 @@ import { useState } from 'react'
 import axios from 'axios';
 
 const BasicTable = () => {
+
+    // State Configurations
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const [page, setPage] = useState(1)
 
     const tableHeaders = ["Name", "Web Pages", "Alpha Two Code", "Country", "Domains", "State/Province"]
 
+    // Fetch Data Function
     const api = 'http://universities.hipolabs.com/search?country=Australia'
     const fetchData = async () => {
         setLoading(true)
@@ -17,16 +20,20 @@ const BasicTable = () => {
         setData(res.data)
     }
 
-    const onAdd=(e)=>{
-        console.log(e.target)
+    // Add Button functionality
+    const onAdd=()=>{
+        const firstItem=data[0]
+        setData([...data, firstItem]); //Please check last page to verify this function
     }
 
+    // Delete Button Functionality
     const onDelete=()=>{
         const lastItemIndex=data.length-1;
         const newData=data.filter((singleData, index)=>index!==lastItemIndex)
-        setData(newData)
+        setData(newData) //Please check last page to verify this function
     }
 
+    // Different components of Material UI packages are used to beautify the UI
     return (
         <Container style={{marginTop:"30px"}}>
             {
@@ -55,7 +62,7 @@ const BasicTable = () => {
                                     {row.name}
                                 </TableCell>
                                 <TableCell>
-                                    {row.web_pages}
+                                    {row.web_pages.join(", ")}
                                 </TableCell>
                                 <TableCell>
                                     {row.alpha_two_code}
@@ -64,7 +71,7 @@ const BasicTable = () => {
                                     {row.country}
                                 </TableCell>
                                 <TableCell>
-                                    {row.domains}
+                                    {row.domains.join(", ")}
                                 </TableCell>
                                 <TableCell>
                                     {!row["state-province"] && "Null"}
@@ -75,6 +82,7 @@ const BasicTable = () => {
                 </Table>
             </TableContainer>
 
+            {/* Pagination Component */}
             <Pagination 
                 style={{
                     padding:30,
@@ -86,9 +94,10 @@ const BasicTable = () => {
                 count={parseInt((data?.length/10).toFixed(0))+1}
                 onChange={(e,value)=>{setPage(value)}}
             /> 
-
+            
+            {/* Button Stack */}
             <Stack spacing={3} direction="row" style={{margin:"10", display:"flex", justifyContent:"center"}}>
-                <Button variant="contained" color='info' size='medium' onClick={() => fetchData()}>Load</Button>
+                <Button variant="contained" color='info' size='medium' onClick={fetchData}>Load</Button>
                 <Button variant="outlined" color='success' size='medium' onClick={onAdd}>Add</Button>
                 <Button variant="outlined" color='error' size='medium' onClick={onDelete}>Delete</Button>
             </Stack>
