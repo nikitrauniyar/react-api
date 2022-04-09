@@ -1,4 +1,4 @@
-import { TableCell, TableContainer, TableHead, Table, TableBody, Container, Paper, TableRow, Button, Stack, Typography, LinearProgress } from '@mui/material'
+import { TableCell, TableContainer, TableHead, Table, TableBody, Container, Paper, TableRow, Button, Stack, Typography, LinearProgress, Pagination } from '@mui/material'
 import { useState } from 'react'
 import axios from 'axios';
 
@@ -6,6 +6,7 @@ const BasicTable = () => {
 
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
+    const [page, setPage] = useState(1)
 
     const tableHeaders = ["Name", "Web Pages", "Alpha Two Code", "Country", "Domains", "State/Province"]
 
@@ -39,7 +40,7 @@ const BasicTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map((tableBody, index) => (
+                        {data.slice((page-1)*10, (page-1)*10+10).map((tableBody, index) => (
                             <TableRow key={index}>
                                 <TableCell>
                                     {tableBody.name}
@@ -64,6 +65,18 @@ const BasicTable = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            <Pagination 
+                style={{
+                    padding:20,
+                    width:"100%",
+                    display:"flex",
+                    justifyContent:"center"               
+                }}
+                // classes={{ul:classes.pagination}}
+                count={(data?.length/10).toFixed(0)}
+                onChange={(e,value)=>{setPage(value)}}
+            /> 
 
             <Stack spacing={3} direction="row">
                 <Button variant="contained" color='info' size='medium' onClick={() => fetchData()}>Load</Button>
