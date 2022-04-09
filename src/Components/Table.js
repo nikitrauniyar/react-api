@@ -3,7 +3,6 @@ import { useState } from 'react'
 import axios from 'axios';
 
 const BasicTable = () => {
-
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const [page, setPage] = useState(1)
@@ -18,8 +17,18 @@ const BasicTable = () => {
         setData(res.data)
     }
 
+    const onAdd=(e)=>{
+        console.log(e.target)
+    }
+
+    const onDelete=()=>{
+        const lastItemIndex=data.length-1;
+        const newData=data.filter((singleData, index)=>index!==lastItemIndex)
+        setData(newData)
+    }
+
     return (
-        <Container>
+        <Container style={{marginTop:"30px"}}>
             {
                 loading && (
                     <>
@@ -40,25 +49,25 @@ const BasicTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.slice((page-1)*10, (page-1)*10+10).map((tableBody, index) => (
+                        {!loading && data.slice((page-1)*10, (page-1)*10+10).map((row, index) => (
                             <TableRow key={index}>
                                 <TableCell>
-                                    {tableBody.name}
+                                    {row.name}
                                 </TableCell>
                                 <TableCell>
-                                    {tableBody.web_pages}
+                                    {row.web_pages}
                                 </TableCell>
                                 <TableCell>
-                                    {tableBody.alpha_two_code}
+                                    {row.alpha_two_code}
                                 </TableCell>
                                 <TableCell>
-                                    {tableBody.country}
+                                    {row.country}
                                 </TableCell>
                                 <TableCell>
-                                    {tableBody.domains}
+                                    {row.domains}
                                 </TableCell>
                                 <TableCell>
-                                    {!tableBody["state-province"] && "Null"}
+                                    {!row["state-province"] && "Null"}
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -68,20 +77,20 @@ const BasicTable = () => {
 
             <Pagination 
                 style={{
-                    padding:20,
+                    padding:30,
                     width:"100%",
                     display:"flex",
                     justifyContent:"center"               
                 }}
                 // classes={{ul:classes.pagination}}
-                count={(data?.length/10).toFixed(0)}
+                count={parseInt((data?.length/10).toFixed(0))+1}
                 onChange={(e,value)=>{setPage(value)}}
             /> 
 
-            <Stack spacing={3} direction="row">
+            <Stack spacing={3} direction="row" style={{margin:"10", display:"flex", justifyContent:"center"}}>
                 <Button variant="contained" color='info' size='medium' onClick={() => fetchData()}>Load</Button>
-                <Button variant="outlined" color='success' size='medium'>Add</Button>
-                <Button variant="outlined" color='error' size='medium'>Delete</Button>
+                <Button variant="outlined" color='success' size='medium' onClick={onAdd}>Add</Button>
+                <Button variant="outlined" color='error' size='medium' onClick={onDelete}>Delete</Button>
             </Stack>
 
         </Container>
