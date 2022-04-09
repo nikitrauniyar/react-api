@@ -1,6 +1,7 @@
 import { TableCell, TableContainer, TableHead, Table, TableBody, Container, Paper, TableRow, Button, Stack, Typography, LinearProgress, Pagination } from '@mui/material'
 import { useState } from 'react'
 import axios from 'axios';
+import { api } from '../Config/API';
 
 const BasicTable = () => {
 
@@ -12,10 +13,9 @@ const BasicTable = () => {
     const tableHeaders = ["Name", "Web Pages", "Alpha Two Code", "Country", "Domains", "State/Province"]
 
     // Fetch Data Function
-    const api = 'http://universities.hipolabs.com/search?country=Australia'
     const fetchData = async () => {
         setLoading(true)
-        const res = await axios.get(api)
+        const res = await axios.get(api())
         setLoading(false)
         setData(res.data)
     }
@@ -49,7 +49,7 @@ const BasicTable = () => {
                     <TableHead color='primary'>
                         <TableRow>
                             {tableHeaders.map((tableHeader) => (
-                                <TableCell key={tableHeader}>
+                                <TableCell key={tableHeader} style={{fontWeight:"bold"}}>
                                     {tableHeader}
                                 </TableCell>
                             ))}
