@@ -28,9 +28,19 @@ const BasicTable = () => {
 
     // Delete Button Functionality
     const onDelete=()=>{
-        const lastItemIndex=data.length-1;
-        const newData=data.filter((singleData, index)=>index!==lastItemIndex)
-        setData(newData) //Please check last page to verify this function
+
+        const lastItemIndex = data.length - 1
+
+        const newData=(data)=>{
+            const temp = [...data];
+            temp.splice(lastItemIndex, 1);
+            return temp;
+        }
+
+        setData(newData);
+        
+  
+
     }
 
     // Different components of Material UI packages are used to beautify the UI
